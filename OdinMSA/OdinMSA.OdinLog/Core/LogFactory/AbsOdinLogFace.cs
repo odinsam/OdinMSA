@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using OdinMSA.OdinLog.Core.Models;
-using OdinMSA.OdinPush.Core;
 using SqlSugar;
 
 namespace OdinMSA.OdinLog.Core.LogFactory

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Text;
 using Newtonsoft.Json;
-using OdinLog.OdinUtils;
-using OdinMSA.OdinLog.Core;
+using OdinModels.OdinUtils.OdinExtensions;
 using OdinMSA.OdinLog.Core.Models;
-using OdinMSA.OdinPush.Core;
 
-namespace OdinMSA.OdinPush.Core
+namespace OdinMSA.OdinLog.Core
 {
     public class OdinLogHelper : AbsOdinLogGenerate
     {

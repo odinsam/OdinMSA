@@ -1,5 +1,4 @@
 ﻿using OdinMSA.OdinLog.Core.Models;
-using OdinMSA.OdinPush.Core;
 
 namespace OdinMSA.OdinLog.Core.LogFactory.LogUtils
 {

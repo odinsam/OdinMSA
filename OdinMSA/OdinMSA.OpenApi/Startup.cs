@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OdinMSA.OdinEF;
+using OdinMSA.OdinLog;
+using OdinMSA.OdinLog.Core;
+using OdinMSA.OdinLog.Core.Models;
+using OdinMSA.OpenApi.Services;
 
 namespace OdinMSA.OpenApi
 {
@@ -27,6 +32,12 @@ namespace OdinMSA.OpenApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IPushRecordSignalRServices,PushRecordSignalRServices>();
+            services.AddSingletonSqlSugar(Configuration,"OdinPush");
+            services.AddOdinSingletonOdinLogs(opt=>
+                opt.Config=new LogConfig {
+                    LogSaveType=new EnumLogSaveType[]{EnumLogSaveType.All},
+                    ConnectionString = "server=47.122.0.223;Database=OdinPush;Uid=root;Pwd=173djjDJJ;"});
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdinMSA.OpenApi", Version = "v1" });
@@ -47,7 +58,7 @@ namespace OdinMSA.OpenApi
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

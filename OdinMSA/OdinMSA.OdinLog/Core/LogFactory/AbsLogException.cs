@@ -1,5 +1,4 @@
 ﻿using OdinMSA.OdinLog.Core.Models;
-using OdinMSA.OdinPush.Core;
 
 namespace OdinMSA.OdinLog.Core.LogFactory
 {
@@ -9,7 +8,7 @@ namespace OdinMSA.OdinLog.Core.LogFactory
         {
         }
 
-        private new LogResponse WriteLog(string logContent) => null;
+        private LogResponse WriteLog(string logContent) => null;
     }
 }
 

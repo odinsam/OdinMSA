@@ -2,16 +2,19 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\OdinCore\OdinModels.OdinSignalR\OdinModels.OdinSignalR.csproj" />
       <ProjectReference Include="..\OdinMSA.OdinEF\OdinMSA.OdinEF.csproj" />
       <ProjectReference Include="..\OdinMSA.OdinLog\OdinMSA.OdinLog.csproj" />
+      <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
     </ItemGroup>
 
 </Project>
