@@ -14,7 +14,7 @@ public class OdinSignalR:Hub
     {
         _eventMonitorService.Connected(this.Context.ConnectionId);
         Console.WriteLine($"客户端 {this.Context.ConnectionId} 已连接");
-        return base.OnConnectedAsync();
+        return base.OnConnectedAsync(); 
     }
     
     public override Task OnDisconnectedAsync(Exception? exception)
