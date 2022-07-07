@@ -11,7 +11,7 @@ using OdinPush.SignalrPush.SignalRServices;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var connectionString = builder.Configuration.GetConnectionString("OdinPush");
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,7 +21,7 @@ builder.Services.AddSingletonSqlSugar(builder.Configuration,"OdinPush");
 builder.Services.AddOdinSingletonOdinLogs(opt=>
     opt.Config=new LogConfig {
         LogSaveType=new EnumLogSaveType[]{EnumLogSaveType.All},
-        ConnectionString = "server=47.122.0.223;Database=OdinPush;Uid=root;Pwd=173djjDJJ;"});
+        ConnectionString = connectionString});
 builder.Services.AddSignalR();
 builder.Services.AddSingletonSnowFlake(1, 1);
 var app = builder.Build();

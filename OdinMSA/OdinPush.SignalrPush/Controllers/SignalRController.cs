@@ -15,6 +15,5 @@ public class SignalRController:ControllerBase
     [Route("/signalr/sendmessage")]
     public void SendMessage(string connectionId,string message)
     {
-        new OdinSignalR(_eventMonitorService).ServerSendMessageToUser(connectionId,message);
     }
 }

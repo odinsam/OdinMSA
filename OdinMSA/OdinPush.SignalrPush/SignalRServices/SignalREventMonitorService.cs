@@ -5,7 +5,7 @@ using SqlSugar;
 
 namespace OdinPush.SignalrPush.SignalRServices;
 
-public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignalREntity>,ISignalREventMonitorService
+public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,ISignalREventMonitorService
 {
     private readonly IOdinSnowFlake _odinSnowFlake;
     public SignalREventMonitorService(ISqlSugarClient db,IOdinSnowFlake odinSnowFlake) : base(db)
@@ -13,27 +13,27 @@ public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignal
         this._odinSnowFlake = odinSnowFlake;
     }
     
-    public void Connected(string connectionId)
+    public bool Connected(string connectionId)
     {
-        
+        return true;
     }
     
-    public void Disconnected(string connectionId)
+    public bool Disconnected(string connectionId)
     {
-        
+        return true;
     }
 
-    public void SendMessageToUser(string sendConnectionId, string receiveConnectionId, string message)
+    public bool SendMessageToUser(string sendConnectionId, string receiveConnectionId, string message)
     {
-        base.Insert(new PushRecordSignalREntity()
-        {
-            FromUser = sendConnectionId,
-            ToUser = receiveConnectionId,
-            PushContent = message,
-        });
+        return base.Insert(new PushRecordSignalREntity()
+            {
+                FromUser = sendConnectionId,
+                ToUser = receiveConnectionId,
+                PushContent = message,
+            });
     }
 
-    public void SendMessageToUsers(string sendConnectionId, List<string> receiveConnectionIds, string message)
+    public bool SendMessageToUsers(string sendConnectionId, List<string> receiveConnectionIds, string message)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var receiveConnectionId in receiveConnectionIds)  
@@ -45,10 +45,10 @@ public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignal
                 PushContent = message,
             });
         }
-        base.InsertRange(entities);
+        return base.InsertRange(entities);
     }
 
-    public void SendMessageToExceptUsers(string sendConnectionId, List<string> exceptReceiveConnectionIds, string message)
+    public bool SendMessageToExceptUsers(string sendConnectionId, List<string> exceptReceiveConnectionIds, string message)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var receiveConnectionId in exceptReceiveConnectionIds)  
@@ -61,20 +61,20 @@ public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignal
                 Remark = "ExceptUser"
             });
         }
-        base.InsertRange(entities);
+        return base.InsertRange(entities);
     }
 
-    public void SendMessageToGroup(string sendConnectionId, string groupName, string message)
+    public bool SendMessageToGroup(string sendConnectionId, string groupName, string message)
     {
-        base.Insert(new PushRecordSignalREntity()
-        {
-            FromUser = sendConnectionId,
-            ToGroup = groupName,
-            PushContent = message,
-        });
+        return base.Insert(new PushRecordSignalREntity()
+            {
+                FromUser = sendConnectionId,
+                ToGroup = groupName,
+                PushContent = message,
+            });
     }
 
-    public void SendMessageToGroups(string sendConnectionId, List<string> groups, string message)
+    public bool SendMessageToGroups(string sendConnectionId, List<string> groups, string message)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var group in groups)  
@@ -86,10 +86,10 @@ public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignal
                 PushContent = message,
             });
         }
-        base.InsertRange(entities);
+        return base.InsertRange(entities);
     }
 
-    public void SendMessageToGroupsExceptUsers(string sendConnectionId, string groupName, List<string> exceptReceiveConnectionIds,
+    public bool SendMessageToGroupsExceptUsers(string sendConnectionId, string groupName, List<string> exceptReceiveConnectionIds,
         string message)
     {
         var entities = new List<PushRecordSignalREntity>();
@@ -104,6 +104,6 @@ public class SignalREventMonitorService : AbsRepositoryServices<PushRecordSignal
                 Remark = "ExceptUser"
             });
         }
-        base.InsertRange(entities);
+        return base.InsertRange(entities);
     }
 }

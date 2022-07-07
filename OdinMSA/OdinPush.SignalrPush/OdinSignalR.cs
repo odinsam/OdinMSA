@@ -1,26 +1,57 @@
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
+using OdinModels.Core.ResultModels;
+using OdinMSA.OdinLog.Core;
+using OdinMSA.OdinLog.Core.Models;
 using OdinPush.SignalrPush.SignalRServices;
 
 namespace OdinPush.SignalrPush;
 
-public class OdinSignalR:Hub
+public interface IOdinSignalRClient
 {
-    private  readonly ISignalREventMonitorService _eventMonitorService;
-    public OdinSignalR(ISignalREventMonitorService eventMonitorService)
+    Task Connected(string message);
+    Task DisConnected(string message);
+    Task SendMessage(string message);
+}
+
+public class OdinSignalR:Hub<IOdinSignalRClient>
+{
+    private readonly ISignalREventMonitorService _eventMonitorService;
+    private readonly IOdinLogs _odinLogs;
+    public OdinSignalR(ISignalREventMonitorService eventMonitorService,IOdinLogs odinLogs)
     {
         this._eventMonitorService = eventMonitorService;
+        this._odinLogs = odinLogs;
     }
     public override Task OnConnectedAsync()
     {
+        Clients.Client(this.Context.ConnectionId).Connected(
+                JsonConvert.SerializeObject(new ApiResult
+                {
+                    Message = $"{this.Context.ConnectionId} 已连接",
+                    Code = 0,
+                })); 
         _eventMonitorService.Connected(this.Context.ConnectionId);
-        Console.WriteLine($"客户端 {this.Context.ConnectionId} 已连接");
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"客户端 {this.Context.ConnectionId} 已连接",
+        });
         return base.OnConnectedAsync(); 
     }
     
     public override Task OnDisconnectedAsync(Exception? exception)
     {
+        Clients.Client(this.Context.ConnectionId).DisConnected(
+                JsonConvert.SerializeObject(new ApiResult
+                {
+                    Message = $"{this.Context.ConnectionId} 已连接",
+                    Code = 0
+                })); 
         _eventMonitorService.Disconnected(this.Context.ConnectionId);
-        Console.WriteLine($"客户端 {this.Context.ConnectionId} 已断开");
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"客户端 {this.Context.ConnectionId} 已断开",
+        });
         return base.OnDisconnectedAsync(exception);
     }
     
@@ -31,9 +62,18 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToUser(string receiveConnectionId, string message)
     {
-        this.Clients.Client(receiveConnectionId).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToUser");
+        Clients.Client(receiveConnectionId).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToUser(this.Context.ConnectionId,receiveConnectionId,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToUser:\r\n {message} ",
+        });
     }
     
     /// <summary>
@@ -43,9 +83,18 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToUsers(List<string> receiveConnectionIds, string message)
     {
-        this.Clients.Clients(receiveConnectionIds).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToUsers");
+        this.Clients.Clients(receiveConnectionIds).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToUsers(this.Context.ConnectionId,receiveConnectionIds,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToUsers:\r\n {message} ",
+        });
     }
     
     /// <summary>
@@ -55,9 +104,18 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToUsersExcept(List<string> exceptReceiveConnectionIds, string message)
     {
-        this.Clients.AllExcept(exceptReceiveConnectionIds).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToUsersExcept");
+        this.Clients.AllExcept(exceptReceiveConnectionIds).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToExceptUsers(this.Context.ConnectionId,exceptReceiveConnectionIds,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToUsersExcept:\r\n {message} ",
+        });
     }
     
     /// <summary>
@@ -67,9 +125,19 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToGroup(string groupName, string message)
     {
-        this.Clients.Group(groupName).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToGroup");
+        
+        this.Clients.Group(groupName).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToGroup(this.Context.ConnectionId,groupName,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToGroup:\r\n {message} ",
+        });
     }
     
     /// <summary>
@@ -79,9 +147,18 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToGroups(List<string> groups, string message)
     {
-        this.Clients.Groups(groups).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToGroups");
+        this.Clients.Groups(groups).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToGroups(this.Context.ConnectionId,groups,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToGroups:\r\n {message} ",
+        });
     }
     
     /// <summary>
@@ -92,8 +169,17 @@ public class OdinSignalR:Hub
     /// <param name="message">发送信息</param>
     public void ServerSendMessageToGroupsExceptUsers(string groupName,List<string> exceptReceiveConnectionIds, string message)
     {
-        this.Clients.GroupExcept(groupName,exceptReceiveConnectionIds).SendAsync("SendMessage",message);
-        Console.WriteLine("ServerSendMessageToGroupsExceptUsers");
+        this.Clients.GroupExcept(groupName,exceptReceiveConnectionIds).SendMessage(
+            JsonConvert.SerializeObject(new ApiResult<string>
+            {
+                Data = message,
+                Message ="",
+                Code = 0
+            }));
         _eventMonitorService.SendMessageToGroupsExceptUsers(this.Context.ConnectionId,groupName,exceptReceiveConnectionIds,message);
+        _odinLogs.Info(new LogInfo()
+        {
+            LogContent = $"ServerSendMessageToGroupsExceptUsers:\r\n {message} ",
+        });
     }
 }

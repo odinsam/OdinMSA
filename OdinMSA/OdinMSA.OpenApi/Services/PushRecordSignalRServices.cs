@@ -9,7 +9,7 @@ public interface IPushRecordSignalRServices
     int GetUserCount();
 }
 
-public class PushRecordSignalRServices : AbsRepositoryServices<PushRecordSignalREntity>,IPushRecordSignalRServices
+public class PushRecordSignalRServices : Repository<PushRecordSignalREntity>,IPushRecordSignalRServices
 {
     public PushRecordSignalRServices(ISqlSugarClient db) : base(db)
     {

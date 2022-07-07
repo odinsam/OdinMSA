@@ -1,4 +1,6 @@
-﻿using OdinMSA.OdinLog.Core.LogFactory;
+﻿using System;
+using Newtonsoft.Json;
+using OdinMSA.OdinLog.Core.LogFactory;
 using OdinMSA.OdinLog.Core.Models;
 
 namespace OdinMSA.OdinLog.Core
@@ -22,17 +24,24 @@ namespace OdinMSA.OdinLog.Core
 
         public LogResponse Info(LogInfo log)
         {
-            return OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Info, Config)?.WriteLog(log);
+            var response = OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Info, Config)?.WriteLog(log);
+            Console.WriteLine(JsonConvert.SerializeObject(log));
+            return response;
         }
 
         public LogResponse Waring(LogInfo log)
         {
-            return OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Waring, Config)?.WriteLog(log);
+            var response =  OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Waring, Config)?.WriteLog(log);
+            Console.WriteLine(JsonConvert.SerializeObject(log));
+            return response;
+
         }
 
         public LogResponse Error(ExceptionLog log)
         {
-            return OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Error, Config)?.WriteLog(log);
+            var response =  OdinLogFactory.GetOdinLogUtils(EnumLogLevel.Error, Config)?.WriteLog(log);
+            Console.WriteLine(JsonConvert.SerializeObject(log));
+            return response;
         }
     }
 }
