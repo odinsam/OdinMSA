@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using OdinLog.OdinUtils;
-using OdinMSA.OdinLog.Core;
+using OdinModels.OdinUtils.OdinExtensions;
 using OdinMSA.OdinLog.Core.Models;
-using OdinMSA.OdinPush.Core;
+using OdinMSA.SnowFlake;
 
-namespace OdinMSA.OdinPush.Core
+namespace OdinMSA.OdinLog.Core
 {
     public class OdinLogHelper : AbsOdinLogGenerate
     {
         
         #region 构造函数
+        private IServiceCollection Services { get; }
+        private IServiceProvider ServiceProvider { get; }
         private static readonly Lazy<OdinLogHelper> Single = new Lazy<OdinLogHelper>(() => new OdinLogHelper());
         private OdinLogHelper()
         {
+            Services = new ServiceCollection();
+            Services.AddSingletonSnowFlake(1,1);
+            ServiceProvider = Services.BuildServiceProvider();
         }
 
         /// <summary>
@@ -47,7 +52,8 @@ namespace OdinMSA.OdinPush.Core
         #region private method
         private LogModel GenerateMessageLogTemplate(EnumLogLevel logLevel, LogInfo log)
         {
-            var logid = log.LogId!=null? log.LogId.ToString() : Guid.NewGuid().ToString("N");
+            var newLogId =ServiceProvider.GetService<IOdinSnowFlake>()!.CreateSnowFlakeId();
+            var logid = log.LogId!=null? log.LogId.ToString() : newLogId.ToString();
             var builder = new StringBuilder();
             var separator = GenerateLogSeparator();
             builder.Append($"【 LogId 】: {logid} \r\n");
