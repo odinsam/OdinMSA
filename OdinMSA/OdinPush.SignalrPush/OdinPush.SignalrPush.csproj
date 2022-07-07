@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\OdinCore\OdinModels.OdinSignalR\OdinModels.OdinSignalR.csproj" />
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinSignalR\OdinModels.OdinSignalR.csproj" />
       <ProjectReference Include="..\OdinMSA.OdinEF\OdinMSA.OdinEF.csproj" />
       <ProjectReference Include="..\OdinMSA.OdinLog\OdinMSA.OdinLog.csproj" />
       <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />

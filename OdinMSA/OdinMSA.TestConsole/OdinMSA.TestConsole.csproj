@@ -12,7 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\OdinCore\OdinModels.Core\OdinModels.Core.csproj" />
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Core\OdinModels.Core.csproj" />
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinUtils\OdinModels.OdinUtils.csproj" />
     </ItemGroup>
 
 </Project>

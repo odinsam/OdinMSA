@@ -1,7 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using OdinModels.Core.Entities;
 using OdinMSA.SnowFlake;
 using SqlSugar;
 using Type = Google.Protobuf.WellKnownTypes.Type;
