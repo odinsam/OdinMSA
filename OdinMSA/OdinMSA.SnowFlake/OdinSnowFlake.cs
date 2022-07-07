@@ -142,7 +142,7 @@ public class OdinSnowFlake : IOdinSnowFlake
                     (LogDatacenterId << DatacenterIdShift) |
                     (LogWorkerId << WorkerIdShift) |
                     LogSequence;
-                if (!_dicContainer.ContainsKey(id))
+                if (_dicContainer != null && !_dicContainer.ContainsKey(id))
                 {
                     _dicContainer.Add(id, id);
                     return id;

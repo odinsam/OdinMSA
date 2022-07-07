@@ -6,7 +6,6 @@ using System.Text;
 using Newtonsoft.Json;
 using OdinMSA.OdinLog.Core.Models;
 using SqlSugar;
-
 namespace OdinMSA.OdinLog.Core.LogFactory
 {
     public abstract class AbsOdinLogFace : IOdinLogFace
@@ -118,7 +117,9 @@ namespace OdinMSA.OdinLog.Core.LogFactory
                 }
                 logFilePath = Path.Combine(logTimePath, logFileName);
                 if (!File.Exists(logFilePath))
-                    using (File.Create(logFilePath));
+                    using (File.Create(logFilePath))
+                    {
+                    }
             }
             return logFilePath;
         }

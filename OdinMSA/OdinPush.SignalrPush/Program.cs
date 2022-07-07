@@ -1,5 +1,3 @@
-using System.Configuration;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OdinMSA.OdinEF;
 using OdinMSA.OdinLog;
 using OdinMSA.OdinLog.Core;
