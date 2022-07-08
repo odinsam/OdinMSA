@@ -9,5 +9,10 @@
         <ProjectReference Include="..\OdinMSA.OdinEF\OdinMSA.OdinEF.csproj" />
         <ProjectReference Include="..\OdinMSA.OdinLog\OdinMSA.OdinLog.csproj" />
     </ItemGroup>
-
+    <ItemGroup>
+        <None Remove="LICENSE" />
+        <Content Include="LICENSE">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

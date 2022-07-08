@@ -1,15 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <LangVersion>10</LangVersion>
+        <Nullable>disable</Nullable>
+        <Title>OdinMSA.SnowFlake</Title>
+        <Authors>odinsam</Authors>
+        <Description>OdinMSA.SnowFlake</Description>
+        <Copyright>odinsam</Copyright>
+        <PackageProjectUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.SnowFlake</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.SnowFlake</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>OdinMSA.SnowFlake</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <NeutralLanguage>zh-Hans-CN</NeutralLanguage>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
-
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.SnowFlake\OdinModels.SnowFlake.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="LICENSE" Pack="true" PackagePath=""/>
     </ItemGroup>
 </Project>

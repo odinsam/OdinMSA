@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <LangVersion>10</LangVersion>
+        <Nullable>disable</Nullable>
+        <Title>OdinMSA.Core</Title>
+        <Authors>odinsam</Authors>
+        <Description>OdinMSA.Core</Description>
+        <Copyright>odinsam</Copyright>
+        <PackageProjectUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.Core</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.Core</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>OdinMSA.Core</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <NeutralLanguage>zh-Hans-CN</NeutralLanguage>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore">
+        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Constants\OdinModels.Constants.csproj" />
+    </ItemGroup>
+</Project>

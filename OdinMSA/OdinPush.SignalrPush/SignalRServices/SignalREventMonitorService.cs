@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
 using OdinModels.OdinSignalR.Entities;
+using OdinModels.OdinSignalR.Enums;
+using OdinModels.OdinUtils.OdinExtensions;
 using OdinMSA.OdinEF;
 using OdinMSA.SnowFlake;
 using SqlSugar;
@@ -13,27 +16,38 @@ public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,IS
         this._odinSnowFlake = odinSnowFlake;
     }
     
-    public bool Connected(string connectionId)
+    public bool Connected(string connectionId,string message)
     {
-        return true;
+        return base.Insert(new PushRecordSignalREntity()
+        {
+            FromUser = connectionId,
+            PushContent = message,
+            EventType = EnumEventType.SignalrConnected.GetDescription()
+        });
     }
     
-    public bool Disconnected(string connectionId)
+    public bool Disconnected(string connectionId,string message)
     {
-        return true;
+        return base.Insert(new PushRecordSignalREntity()
+        {
+            FromUser = connectionId,
+            PushContent = message,
+            EventType = EnumEventType.SignalrDisConnected.GetDescription()
+        });
     }
 
-    public bool SendMessageToUser(string sendConnectionId, string receiveConnectionId, string message)
+    public bool SendMessageToUser(string sendConnectionId, string receiveConnectionId, string message, bool isClientInvoke = false)
     {
         return base.Insert(new PushRecordSignalREntity()
             {
                 FromUser = sendConnectionId,
                 ToUser = receiveConnectionId,
                 PushContent = message,
-            });
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
+        });
     }
 
-    public bool SendMessageToUsers(string sendConnectionId, List<string> receiveConnectionIds, string message)
+    public bool SendMessageToUsers(string sendConnectionId, List<string> receiveConnectionIds, string message, bool isClientInvoke = false)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var receiveConnectionId in receiveConnectionIds)  
@@ -43,12 +57,13 @@ public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,IS
                 FromUser = sendConnectionId,
                 ToUser = receiveConnectionId,
                 PushContent = message,
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
             });
         }
         return base.InsertRange(entities);
     }
 
-    public bool SendMessageToExceptUsers(string sendConnectionId, List<string> exceptReceiveConnectionIds, string message)
+    public bool SendMessageToExceptUsers(string sendConnectionId, List<string> exceptReceiveConnectionIds, string message, bool isClientInvoke = false)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var receiveConnectionId in exceptReceiveConnectionIds)  
@@ -58,23 +73,25 @@ public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,IS
                 FromUser = sendConnectionId,
                 ToUser = receiveConnectionId,
                 PushContent = message,
-                Remark = "ExceptUser"
+                Remark = "ExceptUser",
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
             });
         }
         return base.InsertRange(entities);
     }
 
-    public bool SendMessageToGroup(string sendConnectionId, string groupName, string message)
+    public bool SendMessageToGroup(string sendConnectionId, string groupName, string message, bool isClientInvoke = false)
     {
         return base.Insert(new PushRecordSignalREntity()
             {
                 FromUser = sendConnectionId,
                 ToGroup = groupName,
                 PushContent = message,
-            });
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
+        });
     }
 
-    public bool SendMessageToGroups(string sendConnectionId, List<string> groups, string message)
+    public bool SendMessageToGroups(string sendConnectionId, List<string> groups, string message, bool isClientInvoke = false)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var group in groups)  
@@ -84,13 +101,18 @@ public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,IS
                 FromUser = sendConnectionId,
                 ToGroup = group,
                 PushContent = message,
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
             });
         }
         return base.InsertRange(entities);
     }
 
-    public bool SendMessageToGroupsExceptUsers(string sendConnectionId, string groupName, List<string> exceptReceiveConnectionIds,
-        string message)
+    public bool SendMessageToGroupsExceptUsers(
+        string sendConnectionId, 
+        string groupName, 
+        List<string> exceptReceiveConnectionIds,
+        string message, 
+        bool isClientInvoke = false)
     {
         var entities = new List<PushRecordSignalREntity>();
         foreach (var exceptReceiveConnectionId in exceptReceiveConnectionIds)  
@@ -101,7 +123,8 @@ public class SignalREventMonitorService : Repository<PushRecordSignalREntity>,IS
                 ToUser = exceptReceiveConnectionId,
                 ToGroup = groupName,
                 PushContent = message,
-                Remark = "ExceptUser"
+                Remark = "ExceptUser",
+                EventType = (isClientInvoke ? EnumEventType.SignalrClientInvoke : EnumEventType.SignalrSendMessage).GetDescription()
             });
         }
         return base.InsertRange(entities);

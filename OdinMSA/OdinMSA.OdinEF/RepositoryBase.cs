@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,15 +21,23 @@ public class RepositoryBase<T> : SimpleClient<T> where T : class, new()
     public override bool Insert(T insertObj)
     {
         var propertyInfo = insertObj.GetType().GetProperty("Id");
-        System.Type idType = propertyInfo?.PropertyType;
-        if (idType != null && String.Compare(idType.Name,"Int64",StringComparison.OrdinalIgnoreCase)==0)
+        if (propertyInfo != null)
         {
-            if (Convert.ToInt32(propertyInfo.GetValue(insertObj)) == 0)
+            System.Type idType = propertyInfo.PropertyType;
+            if (String.Compare(idType.Name,"Int64",StringComparison.OrdinalIgnoreCase)==0)
             {
-                var snowFlake = ServiceProvider.GetService<IOdinSnowFlake>();
-                if (snowFlake != null) 
-                    propertyInfo.SetValue(insertObj, snowFlake.CreateSnowFlakeId());
+                if (Convert.ToInt32(propertyInfo.GetValue(insertObj)) == 0)
+                {
+                    var snowFlake = ServiceProvider.GetService<IOdinSnowFlake>();
+                    if (snowFlake != null) 
+                        propertyInfo.SetValue(insertObj, snowFlake.CreateSnowFlakeId());
+                }
             }
+            return base.Context.Insertable<T>(insertObj).ExecuteCommand() > 0;
+        }
+        else
+        {
+            throw new Exception($"仓储类型 { insertObj.GetType().Name } 必须继承自 EntityBase");
         }
         
         // if (snowFlake != null)
@@ -36,7 +45,7 @@ public class RepositoryBase<T> : SimpleClient<T> where T : class, new()
         //     var id = snowFlake.CreateSnowFlakeId();
         //     if (insertObj != null && insertObj.Id == 0) insertObj.Id = id;
         // }
-        return base.Context.Insertable<T>(insertObj).ExecuteCommand() > 0;
+        
     }
 
     /// <summary>

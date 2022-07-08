@@ -17,4 +17,11 @@
       <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="LICENSE" />
+      <Content Include="LICENSE">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ namespace OdinMSA.OdinLog.Core.LogFactory
 {
     public abstract class AbsOdinLogFace : IOdinLogFace
     {
-        private static object fileLock = new object();
+        private static readonly object fileLock = new object();
         public EnumLogLevel LogLevel { get; set; }
         public LogConfig Config { get; set; }
 
@@ -24,6 +24,7 @@ namespace OdinMSA.OdinLog.Core.LogFactory
         protected LogResponse WriteLogContent(LogInfo log)
         {
             var logInfo = OdinLogHelper.GetInstance(Config).GenerateLog(LogLevel, log);
+            logInfo.LogOriginalContent = log.LogContent;
             logInfo.LogSaveType = Config.LogSaveType;
             logInfo.LogException = log is ExceptionLog ? (log as ExceptionLog).LogException : null;
             logInfo.LogMark = log.LogMark;
@@ -81,7 +82,7 @@ namespace OdinMSA.OdinLog.Core.LogFactory
                     {
                         new SugarParameter("@Id",logInfo.LogId),
                         new SugarParameter("@LogLevel",logInfo.LogLevel.ToString()),
-                        new SugarParameter("@LogContent",logInfo.LogContent.Split("\r\n")[3].Split(":")[1].Trim()),
+                        new SugarParameter("@LogContent",logInfo.LogOriginalContent),
                         new SugarParameter("@ExceptionInfo",JsonConvert.SerializeObject(logInfo.LogException)),
                         new SugarParameter("@Remark",logInfo.LogMark),
                         new SugarParameter("@CreateUser","OdinLog"),

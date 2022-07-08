@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32510.428
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinMSA.OpenApi", "OdinMSA.OpenApi\OdinMSA.OpenApi.csproj", "{0BB3F4DF-AAF9-4006-B5C7-0DACE98E0A61}"
 EndProject
@@ -32,6 +32,20 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinModels.Core", "..\..\OdinCore\OdinModels\OdinModels.Core\OdinModels.Core.csproj", "{A558A90A-4B78-4223-92B5-86F2F56C2CBC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinModels", "..\..\OdinCore\OdinModels\OdinModels\OdinModels.csproj", "{35815DE4-1E06-4A60-BFC1-F201318B3E53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinModels.Constants", "..\..\OdinCore\OdinModels\OdinModels.Constants\OdinModels.Constants.csproj", "{408D7803-EB2D-47B7-83A3-95600297071C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinModels.ConfigModels", "..\..\OdinCore\OdinModels\OdinModels.ConfigModels\OdinModels.ConfigModels.csproj", "{B8382678-8ECB-45C4-B473-043E4BEAA003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinModels.OdinConsul", "..\..\OdinCore\OdinModels\OdinModels.OdinConsul\OdinModels.OdinConsul.csproj", "{045AF372-E3D6-402A-8A85-DA830C92C584}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OdinMSA.OdinConsul", "OdinMSA.OdinConsul", "{351AFA1B-2C2C-46A9-8F64-0C47EC00DB30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinConsul.OpenApi", "OdinConsul.OpenApi\OdinConsul.OpenApi.csproj", "{0363426C-3634-4926-84AF-2D169E7DBDE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinMSA.OdinConsul", "OdinMSA.OdinConsul\OdinMSA.OdinConsul.csproj", "{FC6914B0-AF20-47D4-A385-5D12FCD02D26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinMSA.Core", "OdinMSA.Core\OdinMSA.Core.csproj", "{42B871D4-1F61-4DCA-9C87-D0E9C8865630}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +105,30 @@ Global
 		{35815DE4-1E06-4A60-BFC1-F201318B3E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35815DE4-1E06-4A60-BFC1-F201318B3E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35815DE4-1E06-4A60-BFC1-F201318B3E53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408D7803-EB2D-47B7-83A3-95600297071C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408D7803-EB2D-47B7-83A3-95600297071C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408D7803-EB2D-47B7-83A3-95600297071C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408D7803-EB2D-47B7-83A3-95600297071C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8382678-8ECB-45C4-B473-043E4BEAA003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8382678-8ECB-45C4-B473-043E4BEAA003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8382678-8ECB-45C4-B473-043E4BEAA003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8382678-8ECB-45C4-B473-043E4BEAA003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{045AF372-E3D6-402A-8A85-DA830C92C584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{045AF372-E3D6-402A-8A85-DA830C92C584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{045AF372-E3D6-402A-8A85-DA830C92C584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{045AF372-E3D6-402A-8A85-DA830C92C584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0363426C-3634-4926-84AF-2D169E7DBDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0363426C-3634-4926-84AF-2D169E7DBDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0363426C-3634-4926-84AF-2D169E7DBDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0363426C-3634-4926-84AF-2D169E7DBDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6914B0-AF20-47D4-A385-5D12FCD02D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6914B0-AF20-47D4-A385-5D12FCD02D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6914B0-AF20-47D4-A385-5D12FCD02D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6914B0-AF20-47D4-A385-5D12FCD02D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42B871D4-1F61-4DCA-9C87-D0E9C8865630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B871D4-1F61-4DCA-9C87-D0E9C8865630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B871D4-1F61-4DCA-9C87-D0E9C8865630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B871D4-1F61-4DCA-9C87-D0E9C8865630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +142,11 @@ Global
 		{4273E1A4-7C47-4638-A0EC-DBF23FC54C09} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
 		{A558A90A-4B78-4223-92B5-86F2F56C2CBC} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
 		{35815DE4-1E06-4A60-BFC1-F201318B3E53} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
+		{408D7803-EB2D-47B7-83A3-95600297071C} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
+		{B8382678-8ECB-45C4-B473-043E4BEAA003} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
+		{045AF372-E3D6-402A-8A85-DA830C92C584} = {52A7A386-B3C0-4136-895C-64B0DFF64E77}
+		{0363426C-3634-4926-84AF-2D169E7DBDE5} = {351AFA1B-2C2C-46A9-8F64-0C47EC00DB30}
+		{FC6914B0-AF20-47D4-A385-5D12FCD02D26} = {351AFA1B-2C2C-46A9-8F64-0C47EC00DB30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23C8366D-57FA-4992-9B5E-C0360D8FFDAE}

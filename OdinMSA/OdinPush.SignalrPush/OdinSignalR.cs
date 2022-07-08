@@ -7,13 +7,6 @@ using OdinPush.SignalrPush.SignalRServices;
 
 namespace OdinPush.SignalrPush;
 
-public interface IOdinSignalRClient
-{
-    Task Connected(string message);
-    Task DisConnected(string message);
-    Task SendMessage(string message);
-}
-
 public class OdinSignalR:Hub<IOdinSignalRClient>
 {
     private readonly ISignalREventMonitorService _eventMonitorService;
@@ -25,32 +18,34 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     }
     public override Task OnConnectedAsync()
     {
+        var message = $"客户端 {this.Context.ConnectionId} 已连接";
         Clients.Client(this.Context.ConnectionId).Connected(
                 JsonConvert.SerializeObject(new ApiResult
                 {
-                    Message = $"{this.Context.ConnectionId} 已连接",
+                    Message = message,
                     Code = 0,
-                })); 
-        _eventMonitorService.Connected(this.Context.ConnectionId);
+                }));
+        _eventMonitorService.Connected(Context.ConnectionId,message);
         _odinLogs.Info(new LogInfo()
         {
-            LogContent = $"客户端 {this.Context.ConnectionId} 已连接",
+            LogContent = message,
         });
         return base.OnConnectedAsync(); 
     }
     
     public override Task OnDisconnectedAsync(Exception? exception)
     {
+        var message = exception!=null?exception?.Message:$"{this.Context.ConnectionId} 已断开连接";
         Clients.Client(this.Context.ConnectionId).DisConnected(
                 JsonConvert.SerializeObject(new ApiResult
                 {
-                    Message = $"{this.Context.ConnectionId} 已连接",
+                    Message = message,
                     Code = 0
                 })); 
-        _eventMonitorService.Disconnected(this.Context.ConnectionId);
+        _eventMonitorService.Disconnected(Context.ConnectionId,message!);
         _odinLogs.Info(new LogInfo()
         {
-            LogContent = $"客户端 {this.Context.ConnectionId} 已断开",
+            LogContent = message,
         });
         return base.OnDisconnectedAsync(exception);
     }
@@ -60,7 +55,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// </summary>
     /// <param name="receiveConnectionId">接收消息连接Id</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToUser(string receiveConnectionId, string message)
+    public void ServerSendMessageToUser(string receiveConnectionId, string message,bool isClientInvoke=false)
     {
         Clients.Client(receiveConnectionId).SendMessage(
             JsonConvert.SerializeObject(new ApiResult<string>
@@ -69,7 +64,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToUser(this.Context.ConnectionId,receiveConnectionId,message);
+        _eventMonitorService.SendMessageToUser(this.Context.ConnectionId,receiveConnectionId,message, isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToUser:\r\n {message} ",
@@ -81,7 +76,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// </summary>
     /// <param name="receiveConnectionIds">接收消息的连接Id集合</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToUsers(List<string> receiveConnectionIds, string message)
+    public void ServerSendMessageToUsers(List<string> receiveConnectionIds, string message, bool isClientInvoke = false)
     {
         this.Clients.Clients(receiveConnectionIds).SendMessage(
             JsonConvert.SerializeObject(new ApiResult<string>
@@ -90,7 +85,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToUsers(this.Context.ConnectionId,receiveConnectionIds,message);
+        _eventMonitorService.SendMessageToUsers(this.Context.ConnectionId,receiveConnectionIds,message, isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToUsers:\r\n {message} ",
@@ -102,7 +97,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// </summary>
     /// <param name="exceptReceiveConnectionIds">不接收消息的连接Id集合</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToUsersExcept(List<string> exceptReceiveConnectionIds, string message)
+    public void ServerSendMessageToUsersExcept(List<string> exceptReceiveConnectionIds, string message, bool isClientInvoke = false)
     {
         this.Clients.AllExcept(exceptReceiveConnectionIds).SendMessage(
             JsonConvert.SerializeObject(new ApiResult<string>
@@ -111,7 +106,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToExceptUsers(this.Context.ConnectionId,exceptReceiveConnectionIds,message);
+        _eventMonitorService.SendMessageToExceptUsers(this.Context.ConnectionId,exceptReceiveConnectionIds,message, isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToUsersExcept:\r\n {message} ",
@@ -123,7 +118,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// </summary>
     /// <param name="groupName">接收消息连接群组名</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToGroup(string groupName, string message)
+    public void ServerSendMessageToGroup(string groupName, string message, bool isClientInvoke = false)
     {
         
         this.Clients.Group(groupName).SendMessage(
@@ -133,7 +128,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToGroup(this.Context.ConnectionId,groupName,message);
+        _eventMonitorService.SendMessageToGroup(this.Context.ConnectionId,groupName,message, isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToGroup:\r\n {message} ",
@@ -145,7 +140,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// </summary>
     /// <param name="groups">接收消息连接群组集合</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToGroups(List<string> groups, string message)
+    public void ServerSendMessageToGroups(List<string> groups, string message, bool isClientInvoke = false)
     {
         this.Clients.Groups(groups).SendMessage(
             JsonConvert.SerializeObject(new ApiResult<string>
@@ -154,7 +149,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToGroups(this.Context.ConnectionId,groups,message);
+        _eventMonitorService.SendMessageToGroups(this.Context.ConnectionId,groups,message, isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToGroups:\r\n {message} ",
@@ -167,7 +162,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
     /// <param name="groupName">收消息的连接群组</param>
     /// <param name="exceptReceiveConnectionIds">不接收消息的连接Id集合</param>
     /// <param name="message">发送信息</param>
-    public void ServerSendMessageToGroupsExceptUsers(string groupName,List<string> exceptReceiveConnectionIds, string message)
+    public void ServerSendMessageToGroupsExceptUsers(string groupName,List<string> exceptReceiveConnectionIds, string message, bool isClientInvoke = false)
     {
         this.Clients.GroupExcept(groupName,exceptReceiveConnectionIds).SendMessage(
             JsonConvert.SerializeObject(new ApiResult<string>
@@ -176,7 +171,7 @@ public class OdinSignalR:Hub<IOdinSignalRClient>
                 Message ="",
                 Code = 0
             }));
-        _eventMonitorService.SendMessageToGroupsExceptUsers(this.Context.ConnectionId,groupName,exceptReceiveConnectionIds,message);
+        _eventMonitorService.SendMessageToGroupsExceptUsers(this.Context.ConnectionId,groupName,exceptReceiveConnectionIds,message,isClientInvoke);
         _odinLogs.Info(new LogInfo()
         {
             LogContent = $"ServerSendMessageToGroupsExceptUsers:\r\n {message} ",

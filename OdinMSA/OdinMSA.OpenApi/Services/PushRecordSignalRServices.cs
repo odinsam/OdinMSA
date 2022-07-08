@@ -3,12 +3,6 @@ using OdinMSA.OdinEF;
 using SqlSugar;
 
 namespace OdinMSA.OpenApi.Services;
-
-public interface IPushRecordSignalRServices
-{
-    int GetUserCount();
-}
-
 public class PushRecordSignalRServices : Repository<PushRecordSignalREntity>,IPushRecordSignalRServices
 {
     public PushRecordSignalRServices(ISqlSugarClient db) : base(db)

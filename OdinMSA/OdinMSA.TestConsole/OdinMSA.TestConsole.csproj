@@ -15,5 +15,10 @@
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Core\OdinModels.Core.csproj" />
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinUtils\OdinModels.OdinUtils.csproj" />
     </ItemGroup>
-
+    <ItemGroup>
+        <None Remove="LICENSE" />
+        <Content Include="LICENSE">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

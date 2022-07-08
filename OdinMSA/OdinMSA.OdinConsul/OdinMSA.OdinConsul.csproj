@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <LangVersion>10</LangVersion>
+        <Nullable>disable</Nullable>
+        <Title>OdinMSA.OdinConsul</Title>
+        <Authors>odinsam</Authors>
+        <Description>OdinMSA.OdinConsul</Description>
+        <Copyright>odinsam</Copyright>
+        <PackageProjectUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.OdinConsul</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/odinsam/OdinMSA/tree/master/OdinMSA.OdinConsul</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>OdinMSA.OdinConsul</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <NeutralLanguage>zh-Hans-CN</NeutralLanguage>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Constants\OdinModels.Constants.csproj" />
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinConsul\OdinModels.OdinConsul.csproj" />
+      <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Consul" Version="1.6.10.6" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    </ItemGroup>
+</Project>

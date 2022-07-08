@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using OdinModels.SnowFlake;
 
 namespace OdinMSA.SnowFlake;
@@ -33,7 +36,7 @@ public class OdinSnowFlake : IOdinSnowFlake
         private long LogSequence { get; set; }
         // 上次生成ID的时间截
         private long LogLastTimestamp { get; set; }
-        private static Dictionary<long, long>? _dicContainer = null;
+        private static Dictionary<long, long> _dicContainer = null;
 
         /// <summary>
         /// 雪花ID

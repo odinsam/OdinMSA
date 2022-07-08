@@ -11,7 +11,7 @@ while (true)
 {
     string? connId = Console.ReadLine();
     string? message = Console.ReadLine();
-    await conn.SendAsync("ServerSendMessageToUser", connId, message);
+    await conn.SendAsync("ServerSendMessageToUser", connId, message,true);
     Thread.Sleep(1000);
 }
 

@@ -1,0 +1,14 @@
+{
+  "Service": {
+    "ServiceName": "OdinConsul.OpenApi",
+    "ServiceTags":[],
+    "ServiceDeregisterCriticalServiceAfter":5,
+    "ServiceHealInterval":10,
+    "ServiceTimeOut":5
+  },
+  "Consul": {
+    "Protocol":"https",
+    "Ip": "consul.odinsam.com",
+    "Port":"80"
+  }
+}
