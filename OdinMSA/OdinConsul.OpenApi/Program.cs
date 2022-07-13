@@ -1,61 +1,95 @@
+
+using Microsoft.OpenApi.Models;
 using OdinModels.Constants;
-using OdinModels.OdinConsul;
-using OdinModels.OdinUtils.Utils.OdinNet;
-using OdinMSA.Core;
+using OdinModels.Core.ConfigModels;
+using OdinModels.OdinRedis;
+using OdinMSA.Core.Extensions;
+using OdinMSA.Core.Models;
+using OdinMSA.OdinConsul;
 using OdinMSA.OdinConsul.Extensions;
+using OdinMSA.OdinLog;
+using OdinMSA.OdinLog.Core;
+using OdinMSA.OdinLog.Core.Models;
+using OdinMSA.OdinRedis;
+using OdinMSA.SnowFlake;
+using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
-var ip = GetStartUrls(builder.Configuration);
-builder.Host.ConfigureAppConfiguration((context, build) =>
+builder.BuilderAddJsonFile(new []
 {
-    build.AddJsonFile("config/consul.config.json",optional: true,reloadOnChange: true);
+    new JsonFile(){FilePath = "config/consul.json"}
 });
-builder.WebHost.ConfigureKestrel(((context, options) =>
-{
-} )).UseKestrel().UseUrls(ip);
+var config = builder.Configuration;
+var serverConfig = builder.Configuration.GetSectionModel<ServerConfig>("Server");
+var ips = serverConfig.GetAllUrls();
+builder.WebHost.UseUrls(
+    ips.ToArray()
+);
+//注入 odinlogs
+builder.Services.AddOdinSingletonOdinLogs(config);
+// builder.Services.AddOdinSingletonOdinLogs(option =>
+// {
+//     option.Config = new LogConfig()
+//     {
+//         ConnectionString = config.GetConnectionString("dbString"),
+//         LogSaveType = new EnumLogSaveType[] { EnumLogSaveType.File },
+//         DataBaseType = DbType.MySql
+//     };
+// });
+//健康检查
 builder.Services.AddHealthChecks();
-// Add services to the container.
-Console.WriteLine(builder.Configuration.GetSectionValue<string>("Service:ServerIp"));
+//注入 httpclient
+builder.BuilderAddHttpClient(new HttpClientInfo()
+{
+    ClientName = "default",
+});
+//注入 webapi
+builder.Services.AddSingletonMsaWebApi();
+//注入 consul  restTemplate
+builder.Services.AddSingletonMsaRestTemplate();
+//注入 雪花ID
+builder.Services.AddSingletonSnowFlake(1, 1);
+//注入 redis 
+builder.Services.AddTransientMsaRedis(builder.Configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "ToDo API",
+        Description = "An ASP.NET Core Web API for managing ToDo items",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Example Contact",
+            Url = new Uri("https://example.com/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
+});
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+var configuration = app.Configuration;
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    // Configure the HTTP request pipeline.
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
+    app.UseDeveloperExceptionPage();
 }
-
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
-var configuration = app.Configuration;
 app.UseHealthChecks(SystemConstant.KEY_OF_HEALTH_CHECK_PATH);
-var configIp = configuration.GetSectionValue<string>("Service:ServerIp");
-var ips = NetworkHelper.GetHostIpForFas();
-var serverIp = string.IsNullOrEmpty(configIp) ? (ips != null ? ips[0] : "127.0.0.1") : configIp;
-ServiceEntity serviceEntity = new ServiceEntity
-{
-    ServerProtocol = configuration.GetSectionValue<string>("Service:ServerProtocol"),
-    ServerIP = serverIp,
-    ServerPort = configuration.GetSectionValue<int>("Service:ServerPort"),
-    ServiceName = configuration.GetSectionValue<string>("Service:ServiceName"),
-    DeregisterCriticalServiceAfter = configuration.GetSectionValue<int>("Service:ServiceDeregisterCriticalServiceAfter"),
-    HealInterval = configuration.GetSectionValue<int>("Service:ServiceHealInterval"),
-    TimeOut = configuration.GetSectionValue<int>("Service:ServiceTimeOut"),
-    ConsulProtocol = configuration.GetSectionValue<string>("Consul:Protocol"),
-    ConsulIP = configuration.GetSectionValue<string>("Consul:IP"),
-    ConsulPort = configuration.GetSectionValue<int>("Consul:Port"),
-};
-app.RegisterConsul(app.Lifetime, serviceEntity);
+app.RegisterConsul(app.Lifetime, configuration,serverConfig);
 app.Run();
-
-static string[] GetStartUrls(ConfigurationManager configuration)
-{
-    string protocol = configuration.GetSectionValue<string>("Service:ServerProtocol");
-    string ip = configuration.GetSectionValue<string>("Service:ServerIp");
-    string port = configuration.GetSectionValue<string>("Service:ServerPort");
-    return new string[]{$"{protocol}://{ip}:{port}"};
-}

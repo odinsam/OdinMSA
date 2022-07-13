@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinRedis\OdinModels.OdinRedis.csproj" />
+      <ProjectReference Include="..\OdinMSA.OdinLog\OdinMSA.OdinLog.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ServiceStack.Redis" Version="6.1.0" />
+    </ItemGroup>
+
+</Project>

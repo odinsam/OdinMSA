@@ -18,10 +18,15 @@
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Constants\OdinModels.Constants.csproj" />
+      <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Core\OdinModels.Core.csproj" />
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinConsul\OdinModels.OdinConsul.csproj" />
+      <ProjectReference Include="..\OdinMSA.Core\OdinMSA.Core.csproj" />
       <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
     </ItemGroup>
     <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore">
+        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
         <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
       </Reference>

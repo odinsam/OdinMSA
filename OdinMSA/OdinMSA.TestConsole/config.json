@@ -1,0 +1,11 @@
+﻿{
+  "Redis":{
+    "WriteServerList":"173djjDJJ@47.122.0.223:6379",
+    "ReadServerList":"173djjDJJ@47.122.0.223:6379",
+    "MaxWritePoolSize":60,
+    "MaxReadPoolSize":60,
+    "LocalCacheTime":180,
+    "AutoStart":true,
+    "RecordeLog":false
+  }
+}

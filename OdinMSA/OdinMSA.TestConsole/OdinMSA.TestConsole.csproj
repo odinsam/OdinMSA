@@ -14,11 +14,16 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.Core\OdinModels.Core.csproj" />
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinUtils\OdinModels.OdinUtils.csproj" />
+      <ProjectReference Include="..\OdinMSA.OdinRedis\OdinMSA.OdinRedis.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Remove="LICENSE" />
         <Content Include="LICENSE">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="config.json" />
+        <Content Include="config.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 </Project>

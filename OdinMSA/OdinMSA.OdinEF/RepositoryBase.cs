@@ -2,6 +2,10 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using OdinModels.OdinUtils;
+using OdinModels.OdinUtils.OdinExceptionExtensions;
+using OdinMSA.Core;
+using OdinMSA.Core.Enums;
 using OdinMSA.SnowFlake;
 using SqlSugar;
 using Type = Google.Protobuf.WellKnownTypes.Type;
@@ -36,16 +40,7 @@ public class RepositoryBase<T> : SimpleClient<T> where T : class, new()
             return base.Context.Insertable<T>(insertObj).ExecuteCommand() > 0;
         }
         else
-        {
-            throw new Exception($"仓储类型 { insertObj.GetType().Name } 必须继承自 EntityBase");
-        }
-        
-        // if (snowFlake != null)
-        // {
-        //     var id = snowFlake.CreateSnowFlakeId();
-        //     if (insertObj != null && insertObj.Id == 0) insertObj.Id = id;
-        // }
-        
+            throw new OdinException(EnumOdinException.ParamTypeIncorrect);
     }
 
     /// <summary>

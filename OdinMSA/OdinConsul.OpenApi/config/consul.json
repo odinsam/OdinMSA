@@ -1,0 +1,26 @@
+﻿{
+    "Service":{
+        "RegisterId":"odin-consul-1",
+        "HealthUrl":"https://consul-openapi.odinsam.com/health",
+        "ServiceName":"OdinConsul.OpenApi",
+        "DeregisterCriticalServiceAfter":5,
+        "HealInterval":10,
+        "TimeOut":10,
+        "Tags":["1"]
+    },
+    "Consul":{
+        "Protocol":"https",
+        "IP":"consul.odinsam.com",
+        "Port":443
+    },
+    "Redis":{
+        "WriteServerList":"173djjDJJ@47.122.0.223:6379",
+        "ReadServerList":"173djjDJJ@47.122.0.223:6379",
+        "MaxWritePoolSize":60,
+        "MaxReadPoolSize":60,
+        "LocalCacheTime":180,
+        "AutoStart":true,
+        "RecordeLog":false
+        
+    }
+}

@@ -23,9 +23,10 @@
       <PackageReference Include="SqlSugarCore" Version="5.0.9.2" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\OdinMSA.Core\OdinMSA.Core.csproj" />
       <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="LICENSE" Pack="true" PackagePath=""/>
+        <None Include="LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>

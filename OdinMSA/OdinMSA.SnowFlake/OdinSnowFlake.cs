@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using OdinModels.OdinUtils;
+using OdinModels.OdinUtils.OdinExceptionExtensions;
 using OdinModels.SnowFlake;
 
 namespace OdinMSA.SnowFlake;
@@ -46,13 +48,9 @@ public class OdinSnowFlake : IOdinSnowFlake
         {
             this._twepoch = (long)((new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc) - Jan1St1970).TotalMilliseconds);
             if (model.DatacenterId > MaxDatacenterId || model.DatacenterId < 0)
-            {
-                throw new Exception(string.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
-            }
+                throw new OdinException(string.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
             if (model.WorkerId > MaxWorkerId || model.WorkerId < 0)
-            {
-                throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
-            }
+                throw new OdinException(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
             this.LogWorkerId = model.WorkerId;
             this.LogDatacenterId = model.DatacenterId;
             this.LogSequence = 0L;
@@ -72,11 +70,11 @@ public class OdinSnowFlake : IOdinSnowFlake
             this._twepoch = (long)((new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc) - Jan1St1970).TotalMilliseconds);
             if (datacenterId > MaxDatacenterId || datacenterId < 0)
             {
-                throw new Exception(string.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
+                throw new OdinException(string.Format("datacenter Id can't be greater than {0} or less than 0", MaxDatacenterId));
             }
             if (workerId > MaxWorkerId || workerId < 0)
             {
-                throw new Exception(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
+                throw new OdinException(string.Format("worker Id can't be greater than {0} or less than 0", MaxWorkerId));
             }
             this.LogWorkerId = workerId;
             this.LogDatacenterId = datacenterId;

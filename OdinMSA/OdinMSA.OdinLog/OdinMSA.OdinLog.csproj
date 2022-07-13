@@ -25,9 +25,10 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\OdinCore\OdinModels\OdinModels.OdinUtils\OdinModels.OdinUtils.csproj" />
+      <ProjectReference Include="..\OdinMSA.Core\OdinMSA.Core.csproj" />
       <ProjectReference Include="..\OdinMSA.SnowFlake\OdinMSA.SnowFlake.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="LICENSE" Pack="true" PackagePath=""/>
+        <None Include="LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>
